@@ -2,7 +2,7 @@
 
 This repo is the front-end for Adya-EMS (Event Management Software for SECE). It is a React application built with Vite and uses Tailwind/CSS, React Router, Redux Toolkit and a number of UI/analytics libraries. The client talks to the backend server in the sibling `server/` folder via REST endpoints (listed below).
 
-## Project summary
+## Project summary in this project 
 
 - Front-end: React 18 + Vite
 - State management: Redux Toolkit / react-redux
@@ -38,11 +38,11 @@ This README documents how to run the client and the corresponding server found i
     npm run dev
     ```
 
-    Notes:
+    Note:
     - `npm run dev` in `client` starts Vite's dev server (HMR) and hosts the React app (default port 5173 unless configured otherwise).
     - `npm run dev` in `server` runs `nodemon index.js` per the server package.json and listens on port 8000 by default.
 
-## Build & preview
+## Build & preview : 
 
 To build the client for production:
 
