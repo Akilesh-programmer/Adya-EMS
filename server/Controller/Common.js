@@ -279,6 +279,10 @@ const getComprehensiveDashboardData = async (req, res) => {
     };
 
     console.log("Dashboard data generated successfully:", dashboardData);
+    console.log(
+      "Most Active Department:",
+      dashboardData.mostEventBookingDepartment
+    );
     return res.status(200).json(dashboardData);
   } catch (error) {
     console.error("Error fetching comprehensive dashboard data:", error);
