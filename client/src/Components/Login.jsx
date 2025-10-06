@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUserPlus, FaSignInAlt, FaCrown, FaShieldAlt, FaStar } from "react-icons/fa";
+import { HiSparkles } from "react-icons/hi";
 import axios from "axios";
 import events from "../assets/Website setup-rafiki.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -88,131 +89,278 @@ function Signup() {
   };
 
   return (
-    <div className="flex items-center justify-center p-4">
-      <ToastContainer />
-      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-white rounded-2xl shadow-xl">
-        <div className="p-8 lg:p-12">
-          <div className="mb-8 h-24">
-            <img
-              src="https://sece.ac.in/wp-content/uploads/2024/05/clg-logo2-scaled.webp"
-              alt="College Logo"
-            />
-            <h1 className="text-3xl mt-3">
-              Welcome to the Events Management Software
-            </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gold-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-60 h-60 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse delay-500"></div>
+      </div>
+      
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 overflow-hidden relative z-10">
+        {/* Left Panel - Form */}
+        <div className="p-8 lg:p-12 relative">
+          {/* Premium header with logo */}
+          <div className="mb-8">
+            <div className="flex items-center justify-center mb-6">
+              <div className="relative">
+                <img
+                  src="https://sece.ac.in/wp-content/uploads/2024/05/clg-logo2-scaled.webp"
+                  alt="College Logo"
+                  className="h-16 w-auto drop-shadow-2xl"
+                />
+                <div className="absolute -top-1 -right-1">
+                  <FaCrown className="text-yellow-400 text-lg animate-pulse" />
+                </div>
+              </div>
+            </div>
+            <div className="text-center">
+              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-gold-400 via-yellow-300 to-gold-400 bg-clip-text text-transparent mb-2">
+                Premium Events Management
+              </h1>
+              <div className="flex items-center justify-center gap-2 text-white/70">
+                <HiSparkles className="text-yellow-400" />
+                <span className="text-sm">Luxury • Professional • Exclusive</span>
+                <HiSparkles className="text-yellow-400" />
+              </div>
+            </div>
           </div>
 
-          <div className="mt-24">
-            <div className="mt-36 mb-4">
-              <h1 className="text-3xl">{isSignup ? "Sign Up" : "Login"}</h1>
+          <div className="mt-12">
+            {/* Toggle Section */}
+            <div className="mb-8">
+              <div className="flex items-center justify-center mb-6">
+                <div className="bg-black/20 p-1 rounded-full flex">
+                  <button
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                      !isSignup 
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                    onClick={() => setIsSignup(false)}
+                  >
+                    <FaSignInAlt className="text-xs" />
+                    Login
+                  </button>
+                  <button
+                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                      isSignup 
+                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg' 
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                    onClick={() => setIsSignup(true)}
+                  >
+                    <FaUserPlus className="text-xs" />
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+              <h2 className="text-3xl font-bold text-white text-center mb-2">
+                {isSignup ? "Create Account" : "Welcome Back"}
+              </h2>
+              <p className="text-white/60 text-center">
+                {isSignup 
+                  ? "Join our exclusive community" 
+                  : "Sign in to your premium account"
+                }
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {isSignup && (
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
+                <div className="space-y-1">
+                  <label className="text-white/80 text-sm font-medium flex items-center gap-2">
+                    <FaStar className="text-yellow-400 text-xs" />
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Enter your full name"
+                    className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               )}
 
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={formData.email}
-                onChange={handleChange}
-              />
-
-              <div className="relative">
+              <div className="space-y-1">
+                <label className="text-white/80 text-sm font-medium flex items-center gap-2">
+                  <FaStar className="text-yellow-400 text-xs" />
+                  Email Address
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.password}
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300"
+                  value={formData.email}
                   onChange={handleChange}
+                  required
                 />
-                <button
-                  type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <FaEyeSlash className="text-gray-500" />
-                  ) : (
-                    <FaEye className="text-gray-500" />
-                  )}
-                </button>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-white/80 text-sm font-medium flex items-center gap-2">
+                  <FaShieldAlt className="text-yellow-400 text-xs" />
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Enter your password"
+                    className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300 pr-12"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white transition-colors"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
               </div>
 
               {isSignup && (
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Re-Type Password"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              )}
-
-              {isSignup && (
                 <>
-                  <input
-                    type="text"
-                    name="dept"
-                    placeholder="Department"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.dept}
-                    onChange={handleChange}
-                  />
+                  <div className="space-y-1">
+                    <label className="text-white/80 text-sm font-medium flex items-center gap-2">
+                      <FaShieldAlt className="text-yellow-400 text-xs" />
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="Confirm your password"
+                      className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
 
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                  />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-white/80 text-sm font-medium">Department</label>
+                      <input
+                        type="text"
+                        name="dept"
+                        placeholder="Your department"
+                        className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300"
+                        value={formData.dept}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-white/80 text-sm font-medium">Phone Number</label>
+                      <input
+                        type="text"
+                        name="phoneNumber"
+                        placeholder="Your phone number"
+                        className="w-full px-6 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:bg-white/15 transition-all duration-300"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
                 </>
               )}
 
-              <div className="mt-10">
+              <div className="pt-6">
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300"
+                  className="w-full bg-gradient-to-r from-purple-600 via-purple-700 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-purple-700 hover:via-purple-800 hover:to-blue-700 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-2xl hover:shadow-purple-500/25 flex items-center justify-center gap-3"
                 >
-                  {isSignup ? "Sign Up" : "Login"}
+                  {isSignup ? (
+                    <>
+                      <FaUserPlus />
+                      Create Premium Account
+                    </>
+                  ) : (
+                    <>
+                      <FaSignInAlt />
+                      Access Dashboard
+                    </>
+                  )}
                 </button>
-                <p
-                  className="text-center text-gray-600 mt-4 cursor-pointer"
-                  onClick={() => setIsSignup(!isSignup)}
-                >
-                  {isSignup
-                    ? "Already have an account? Login here"
-                    : "Don't have an account? Sign up here"}
-                </p>
+                
+                <div className="text-center mt-6">
+                  <button
+                    type="button"
+                    className="text-white/70 hover:text-white transition-colors text-sm underline decoration-dotted underline-offset-4"
+                    onClick={() => setIsSignup(!isSignup)}
+                  >
+                    {isSignup
+                      ? "Already have an account? Sign in here"
+                      : "New to our platform? Create account"}
+                  </button>
+                </div>
               </div>
             </form>
           </div>
         </div>
 
-        <div className="hidden lg:block bg-gradient-to-br rounded-r-2xl">
-          <div className="h-[80%] flex flex-col justify-between">
-            <img src={events} alt="events" className="w-[90%] h-[100%]" />
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl mt-6 p-6 shadow-lg">
-              <h3 className="font-semibold text-gray-800">
-                Your data, your rules
+        {/* Right Panel - Visual */}
+        <div className="hidden lg:block relative bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 to-blue-900/50"></div>
+          <div className="relative h-full flex flex-col justify-center items-center p-12">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6 border border-white/20">
+                <FaCrown className="text-yellow-400" />
+                <span className="text-white font-medium">Premium Experience</span>
+              </div>
+              <h3 className="text-4xl font-bold text-white mb-4">
+                Luxury Event 
+                <br />
+                Management
               </h3>
-              <p className="text-sm text-gray-600">
-                Your data belongs to you, and our encryption ensures that
+              <p className="text-white/70 text-lg">
+                Experience the finest in event coordination with our premium platform
               </p>
+            </div>
+            
+            <div className="w-full max-w-md">
+              <img 
+                src={events} 
+                alt="Premium Events" 
+                className="w-full h-auto drop-shadow-2xl opacity-90 hover:opacity-100 transition-opacity duration-300" 
+              />
+            </div>
+            
+            <div className="mt-8 grid grid-cols-3 gap-4 w-full max-w-md">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <FaShieldAlt className="text-yellow-400 text-2xl mx-auto mb-2" />
+                <p className="text-white/80 text-sm font-medium">Secure</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <FaCrown className="text-yellow-400 text-2xl mx-auto mb-2" />
+                <p className="text-white/80 text-sm font-medium">Premium</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <HiSparkles className="text-yellow-400 text-2xl mx-auto mb-2" />
+                <p className="text-white/80 text-sm font-medium">Exclusive</p>
+              </div>
             </div>
           </div>
         </div>
