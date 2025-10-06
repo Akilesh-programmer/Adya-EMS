@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUserPlus, FaSignInAlt, FaCrown, FaShieldAlt, FaStar } from "react-icons/fa";
+import { HiSparkles } from "react-icons/hi";
 import axios from "axios";
 import events from "../assets/Website setup-rafiki.png";
 import { ToastContainer, toast } from "react-toastify";
