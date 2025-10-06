@@ -59,13 +59,11 @@ const createEvent = async (req, res) => {
       .json({ message: "Event created successfully", event: newEvent });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        message: "Server error",
-        error: error.message,
-        stack: error.stack,
-      });
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+      stack: error.stack,
+    });
   }
 };
 
@@ -88,6 +86,7 @@ const getEventById = async (req, res) => {
       .populate("foodform")
       .populate("guestroom")
       .populate("transport");
+    console.log("Fetched Event:", event);
 
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
