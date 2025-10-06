@@ -34,10 +34,15 @@ const eventSchema = new mongoose.Schema({
     type: String,
   },
   poster: { type: String },
-  communicationform: { type: mongoose.Schema.Types.ObjectId, ref: "MediaRequirements" },
+  communicationform: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "MediaRequirements",
+  },
   foodform: { type: mongoose.Schema.Types.ObjectId, ref: "foodforms" },
   guestroom: { type: mongoose.Schema.Types.ObjectId, ref: "Booking" },
-  transport: [{ type: mongoose.Schema.Types.ObjectId, ref: "TransportRequest" }],
+  transport: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "TransportRequest" },
+  ],
 });
 
 const Event = mongoose.model("Event", eventSchema);

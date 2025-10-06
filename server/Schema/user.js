@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: { type: String, required: true },
     designation: { type: String, required: false },
     dept: { type: String, required: true },
-    empid: { type: String, required: false }
+    empid: { type: String, required: false },
   },
   { timestamps: true }
 );

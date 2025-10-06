@@ -87,16 +87,16 @@ export const Login = async (req, res) => {
         designation: user.designation,
         empid: user.empid,
         phonenumber: user.phoneNumber,
-        dept: user.dept
+        dept: user.dept,
       },
       secretKey,
       { expiresIn: "7d" }
     );
 
-    res.status(200).json({ 
-      message: "Login successful", 
+    res.status(200).json({
+      message: "Login successful",
       token,
-      dept: user.dept
+      dept: user.dept,
     });
   } catch (err) {
     res

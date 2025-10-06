@@ -34,7 +34,7 @@ export const createEndform = async (req, res) => {
       communicationform,
       guestform,
       foodform,
-      status: "Pending"
+      status: "Pending",
     });
     const savedEndform = await newEndform.save();
     console.log("Saved Endform:", savedEndform);
@@ -49,7 +49,9 @@ export const createEndform = async (req, res) => {
     });
   } catch (error) {
     console.error("Error in createEndform:", error);
-    res.status(500).json({ message: "Failed to create Endform", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to create Endform", error: error.message });
   }
 };
 
@@ -66,39 +68,55 @@ export const getAllEndforms = async (req, res) => {
 export const getOverallPendingEndforms = async (req, res) => {
   try {
     console.log("Fetching pending and approved endforms...");
-    
+
     // Get both pending and approved endforms so approved events don't disappear
-    const endforms = await Endform.find({ 
-      status: { $in: ["Pending", "Approved"] } 
+    const endforms = await Endform.find({
+      status: { $in: ["Pending", "Approved"] },
     });
     console.log(`Found ${endforms.length} endforms (pending + approved)`);
-    
+
     if (!endforms || endforms.length === 0) {
       return res.status(200).json([]); // Return empty array instead of 404
     }
 
     // Collect all IDs for batch queries
-    const eventIds = endforms.map(e => e.eventdata).filter(Boolean);
-    const transportIds = endforms.flatMap(e => e.transportform || []).filter(Boolean);
-    const foodIds = endforms.map(e => e.foodform).filter(Boolean);
-    const guestIds = endforms.map(e => e.guestform).filter(Boolean);
-    const communicationIds = endforms.map(e => e.communicationform).filter(Boolean);
+    const eventIds = endforms.map((e) => e.eventdata).filter(Boolean);
+    const transportIds = endforms
+      .flatMap((e) => e.transportform || [])
+      .filter(Boolean);
+    const foodIds = endforms.map((e) => e.foodform).filter(Boolean);
+    const guestIds = endforms.map((e) => e.guestform).filter(Boolean);
+    const communicationIds = endforms
+      .map((e) => e.communicationform)
+      .filter(Boolean);
 
     // Batch fetch all related data
-    const [basicEvents, transportForms, foodForms, guestForms, communicationForms] = await Promise.all([
+    const [
+      basicEvents,
+      transportForms,
+      foodForms,
+      guestForms,
+      communicationForms,
+    ] = await Promise.all([
       BasicEvent.find({ _id: { $in: eventIds } }),
       transport.find({ _id: { $in: transportIds } }),
       foodformModel.find({ _id: { $in: foodIds } }),
       guestroomform.find({ _id: { $in: guestIds } }),
-      communicationform.find({ _id: { $in: communicationIds } })
+      communicationform.find({ _id: { $in: communicationIds } }),
     ]);
 
     // Create lookup maps for efficient access
-    const basicEventsMap = new Map(basicEvents.map(e => [e._id.toString(), e]));
-    const transportMap = new Map(transportForms.map(t => [t._id.toString(), t]));
-    const foodMap = new Map(foodForms.map(f => [f._id.toString(), f]));
-    const guestMap = new Map(guestForms.map(g => [g._id.toString(), g]));
-    const communicationMap = new Map(communicationForms.map(c => [c._id.toString(), c]));
+    const basicEventsMap = new Map(
+      basicEvents.map((e) => [e._id.toString(), e])
+    );
+    const transportMap = new Map(
+      transportForms.map((t) => [t._id.toString(), t])
+    );
+    const foodMap = new Map(foodForms.map((f) => [f._id.toString(), f]));
+    const guestMap = new Map(guestForms.map((g) => [g._id.toString(), g]));
+    const communicationMap = new Map(
+      communicationForms.map((c) => [c._id.toString(), c])
+    );
 
     // Process each endform
     const populatedEndforms = endforms.map((endform) => {
@@ -107,7 +125,8 @@ export const getOverallPendingEndforms = async (req, res) => {
 
         // Get basic event data
         if (endform.eventdata) {
-          populatedData.basicEvent = basicEventsMap.get(endform.eventdata.toString()) || {};
+          populatedData.basicEvent =
+            basicEventsMap.get(endform.eventdata.toString()) || {};
         } else {
           populatedData.basicEvent = {};
         }
@@ -115,7 +134,7 @@ export const getOverallPendingEndforms = async (req, res) => {
         // Get transport data
         if (endform.transportform && endform.transportform.length > 0) {
           populatedData.transport = endform.transportform
-            .map(id => transportMap.get(id.toString()))
+            .map((id) => transportMap.get(id.toString()))
             .filter(Boolean);
         } else {
           populatedData.transport = [];
@@ -123,21 +142,24 @@ export const getOverallPendingEndforms = async (req, res) => {
 
         // Get food form data
         if (endform.foodform) {
-          populatedData.foodform = foodMap.get(endform.foodform.toString()) || {};
+          populatedData.foodform =
+            foodMap.get(endform.foodform.toString()) || {};
         } else {
           populatedData.foodform = {};
         }
 
         // Get guest form data
         if (endform.guestform) {
-          populatedData.guestform = guestMap.get(endform.guestform.toString()) || {};
+          populatedData.guestform =
+            guestMap.get(endform.guestform.toString()) || {};
         } else {
           populatedData.guestform = {};
         }
 
         // Get communication form data
         if (endform.communicationform) {
-          populatedData.communicationform = communicationMap.get(endform.communicationform.toString()) || {};
+          populatedData.communicationform =
+            communicationMap.get(endform.communicationform.toString()) || {};
         } else {
           populatedData.communicationform = {};
         }
@@ -152,15 +174,19 @@ export const getOverallPendingEndforms = async (req, res) => {
       }
     });
 
-    const validPopulatedEndforms = populatedEndforms.filter(endform => endform !== null);
-    console.log(`Successfully processed ${validPopulatedEndforms.length} endforms`);
-    
+    const validPopulatedEndforms = populatedEndforms.filter(
+      (endform) => endform !== null
+    );
+    console.log(
+      `Successfully processed ${validPopulatedEndforms.length} endforms`
+    );
+
     res.status(200).json(validPopulatedEndforms);
   } catch (error) {
     console.error("Error fetching pending endforms:", error);
-    res.status(500).json({ 
+    res.status(500).json({
       message: "Failed to fetch overall pending Endforms",
-      error: error.message 
+      error: error.message,
     });
   }
 };
@@ -193,22 +219,24 @@ export const deleteEndform = async (req, res) => {
     console.log("Request params:", req.params);
     console.log("Endform ID to delete:", req.params.id);
     console.log("ID type:", typeof req.params.id);
-    
+
     const deletedEndform = await Endform.findByIdAndDelete(req.params.id);
     console.log("Delete result:", deletedEndform);
-    
+
     if (!deletedEndform) {
       console.log("Endform not found for ID:", req.params.id);
       return res.status(404).json({ message: "Endform not found" });
     }
-    
+
     console.log("Endform deleted successfully:", deletedEndform._id);
     res.status(200).json({ message: "Endform deleted successfully" });
   } catch (error) {
     console.error("Error in deleteEndform:", error);
     console.error("Error message:", error.message);
     console.error("Error stack:", error.stack);
-    res.status(500).json({ message: "Failed to delete Endform", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to delete Endform", error: error.message });
   }
 };
 
@@ -216,9 +244,9 @@ export const getEventById = async (req, res) => {
   try {
     const { id } = req.params;
     console.log("getEventById called with id:", id);
-    
+
     const endform = await Endform.findById(id);
-    
+
     if (!endform) {
       console.log("Endform not found for id:", id);
       return res.status(404).json({ message: "Event not found" });
@@ -243,14 +271,22 @@ export const getEventById = async (req, res) => {
       console.log("Populated foodform:", populatedData.foodform);
       console.log("Foodform ID from endform:", endform.foodform);
       console.log("Foodform data type:", typeof populatedData.foodform);
-      console.log("Foodform data keys:", populatedData.foodform ? Object.keys(populatedData.foodform) : "No data");
+      console.log(
+        "Foodform data keys:",
+        populatedData.foodform ? Object.keys(populatedData.foodform) : "No data"
+      );
     } else {
       // For existing events that might not have foodform in EndForm, check if basicEvent has foodform
       if (endform.eventdata) {
         const basicEvent = await BasicEvent.findById(endform.eventdata);
         if (basicEvent && basicEvent.foodform) {
-          populatedData.foodform = await foodformModel.findById(basicEvent.foodform);
-          console.log("Found foodform from basicEvent:", populatedData.foodform);
+          populatedData.foodform = await foodformModel.findById(
+            basicEvent.foodform
+          );
+          console.log(
+            "Found foodform from basicEvent:",
+            populatedData.foodform
+          );
         }
       }
     }
@@ -259,8 +295,13 @@ export const getEventById = async (req, res) => {
       console.log("Populated guestform:", populatedData.guestform);
     }
     if (endform.communicationform) {
-      populatedData.communicationform = await communicationform.findById(endform.communicationform);
-      console.log("Populated communicationform:", populatedData.communicationform);
+      populatedData.communicationform = await communicationform.findById(
+        endform.communicationform
+      );
+      console.log(
+        "Populated communicationform:",
+        populatedData.communicationform
+      );
     }
 
     const populatedEvent = {

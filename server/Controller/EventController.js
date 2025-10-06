@@ -26,7 +26,7 @@ const createEvent = async (req, res) => {
       communicationform,
       foodform,
       guestroom,
-      transport
+      transport,
     } = req.body;
 
     const newEvent = new Event({
@@ -50,7 +50,7 @@ const createEvent = async (req, res) => {
       communicationform: communicationform || undefined,
       foodform: foodform || undefined,
       guestroom: guestroom || undefined,
-      transport: transport || undefined
+      transport: transport || undefined,
     });
 
     await newEvent.save();
@@ -59,7 +59,13 @@ const createEvent = async (req, res) => {
       .json({ message: "Event created successfully", event: newEvent });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error", error: error.message, stack: error.stack });
+    res
+      .status(500)
+      .json({
+        message: "Server error",
+        error: error.message,
+        stack: error.stack,
+      });
   }
 };
 
@@ -100,7 +106,8 @@ const updateEvent = async (req, res) => {
     updateData.status = "Approved";
 
     // Accept and set sub-form ObjectId references if provided
-    if (req.body.communicationform) updateData.communicationform = req.body.communicationform;
+    if (req.body.communicationform)
+      updateData.communicationform = req.body.communicationform;
     if (req.body.foodform) updateData.foodform = req.body.foodform;
     if (req.body.guestroom) updateData.guestroom = req.body.guestroom;
     if (req.body.transport) updateData.transport = req.body.transport;

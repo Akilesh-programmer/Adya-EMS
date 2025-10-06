@@ -1,5 +1,13 @@
 import express from "express";
-import { getCurrentDateEvents, getDashboardData, getEventStats, generateSingleEventPdf, getComprehensiveDashboardData, getPendingPageData, getProfilePageData } from "../Controller/Common.js";
+import {
+  getCurrentDateEvents,
+  getDashboardData,
+  getEventStats,
+  generateSingleEventPdf,
+  getComprehensiveDashboardData,
+  getPendingPageData,
+  getProfilePageData,
+} from "../Controller/Common.js";
 
 const router = express.Router();
 
@@ -21,7 +29,10 @@ router.get("/test-pdf", (req, res) => {
 });
 
 router.get("/test", (req, res) => {
-  res.json({ message: "Common router is working", timestamp: new Date().toISOString() });
+  res.json({
+    message: "Common router is working",
+    timestamp: new Date().toISOString(),
+  });
 });
 
 export default router;

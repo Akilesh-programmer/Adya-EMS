@@ -1,5 +1,13 @@
 import express from "express";
-import { createEvent, getAllEvents, getEventById, updateEvent, uploadPoster, approveEvent, upload } from "../Controller/EventController.js";
+import {
+  createEvent,
+  getAllEvents,
+  getEventById,
+  updateEvent,
+  uploadPoster,
+  approveEvent,
+  upload,
+} from "../Controller/EventController.js";
 
 const router = express.Router();
 router.post("/create", createEvent);

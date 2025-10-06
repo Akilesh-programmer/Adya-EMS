@@ -7,12 +7,17 @@ const EndformSchema = new mongoose.Schema({
   iqacno: {
     type: String,
   },
-  transportform: [{ type: mongoose.Schema.Types.ObjectId, ref: "TransportRequest" }],
+  transportform: [
+    { type: mongoose.Schema.Types.ObjectId, ref: "TransportRequest" },
+  ],
   amenityform: {
     type: String,
   },
   guestform: { type: mongoose.Schema.Types.ObjectId, ref: "Booking" },
-  communicationform: { type: mongoose.Schema.Types.ObjectId, ref: "MediaRequirements" },
+  communicationform: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "MediaRequirements",
+  },
   foodform: { type: mongoose.Schema.Types.ObjectId, ref: "foodforms" },
   status: {
     type: String,
@@ -23,32 +28,32 @@ const EndformSchema = new mongoose.Schema({
       approved: { type: Boolean, default: false },
       approvedBy: { type: String },
       approvedAt: { type: Date },
-      department: { type: String, default: "Communication" }
+      department: { type: String, default: "Communication" },
     },
     food: {
       approved: { type: Boolean, default: false },
       approvedBy: { type: String },
       approvedAt: { type: Date },
-      department: { type: String, default: "Food" }
+      department: { type: String, default: "Food" },
     },
     transport: {
       approved: { type: Boolean, default: false },
       approvedBy: { type: String },
       approvedAt: { type: Date },
-      department: { type: String, default: "Transport" }
+      department: { type: String, default: "Transport" },
     },
     guestroom: {
       approved: { type: Boolean, default: false },
       approvedBy: { type: String },
       approvedAt: { type: Date },
-      department: { type: String, default: "Guest Deparment" }
+      department: { type: String, default: "Guest Deparment" },
     },
     iqac: {
       approved: { type: Boolean, default: false },
       approvedBy: { type: String },
       approvedAt: { type: Date },
-      department: { type: String, default: "IQAC" }
-    }
+      department: { type: String, default: "IQAC" },
+    },
   },
   createdat: {
     type: Date,
